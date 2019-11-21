@@ -1,5 +1,5 @@
 require(ggplot2)
-dataset <- get(load("/Users/andrea/Desktop/TFCM/keyPressDataWithLaneDeviation.Rdata"))
+dataset <- get(load("/Users/andrea/Desktop/TFCM/key.Rdata"))
 
 dataset <- subset(dataset, typingErrorMadeOnTrial == 0)
 
@@ -66,17 +66,17 @@ gplot$labels$colour <- "Experimental Conditions"
 
 #2222222222222222222222222222222222222222222222
 
-drift <- get(load("/Users/andrea/Desktop/TFCM/tableOfDriftValuesCalibration.Rdata"))
+drift <- get(load("/Users/andrea/Desktop/TFCM/Drift"))
 
 drift_short <- table_drift[with(table_drift, trialTime >= 15000 & trialTime <= 18000), ]
 colors <- sample(colors(), 20)
 plot(NULL, xlim = c(15000, 18000), ylim = c(-1, 1.5) )
 
+#prende le righe in base al trial e te le disegna
+
 i <- 1;
 while(i <= 20) { 
-  with(drift_short[drift_short$trial == i,] #prende le righe in base al trial e te le disegna
-       , lines(trialTime, posX, col = colors[i]))
-  
+  with(drift_short[drift_short$trial == i,] , lines(trialTime, posX, col = colors[i]))
   posXs <- drift_short[with(drift_short, trial == i), ]$posX
   i <- i + 1
 }
