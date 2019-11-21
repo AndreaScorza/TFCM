@@ -1,5 +1,6 @@
 require(ggplot2)
 dataset <- get(load("/Users/andrea/Desktop/TFCM/keyPressDataWithLaneDeviation.Rdata"))
+
 dataset <- subset(dataset, typingErrorMadeOnTrial == 0)
 
 
@@ -61,9 +62,34 @@ gplot <- gplot + scale_colour_manual(limits=c("Dialing Focus", "Steering Focus")
 gplot <- gplot + labs(title="Dual Dial vs Dual Steer Focus Condition", x ="Key Presses", y = "Lane Deviation")
 
 gplot$labels$colour <- "Experimental Conditions"
-plot(gplot)
+#plot(gplot)
 
 #2222222222222222222222222222222222222222222222
+
+drift <- get(load("/Users/andrea/Desktop/TFCM/tableOfDriftValuesCalibration.Rdata"))
+
+drift_short <- table_drift[with(table_drift, trialTime >= 15000 & trialTime <= 18000), ]
+colors <- sample(colors(), 20)
+plot(NULL, xlim = c(15000, 18000), ylim = c(-1, 1.5) )
+
+i <- 1;
+while(i <= 20) { 
+  with(drift_short[drift_short$trial == i,] #prende le righe in base al trial e te le disegna
+       , lines(trialTime, posX, col = colors[i]))
+  
+  posXs <- drift_short[with(drift_short, trial == i), ]$posX
+  i <- i + 1
+}
+
+#2bbbbbbbbbbbbbbbbbbb------------------------------------
+
+
+
+
+
+
+
+
 
 
 
