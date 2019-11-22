@@ -81,15 +81,35 @@ i <- 1;
 while(i <= 20) { 
   with(drift_short[drift_short$trial == i,] , lines(trialTime, posX, col = colors[i]))
   posXs <- drift_short[with(drift_short, trial == i), ]$posX
+  hist(posXs, col = i)
   i <- i + 1
 }
 
 #2bbbbbbbbbbbbbbbbbbb------------------------------------
+#a	<- rnorm(10000,	0.0,	0.13)
+#hist(a,	col="grey")
+#summary(a)
 
 
+plot(NULL, xlim = c(0, 3000), ylim = c(-2, 2), xlab="Trial time (ms)",
+     ylab="Lateral Position (m)", main="Simulated Data (based on original model)")
 
+var <- 0
+while(var < 20){
+  x <- seq(0, 3000, length=60)
+  hx <- c()
+  lat_dev <- 0
+  for (value in x){
+      lat_dev = rnorm(1,lat_dev,0.13)
+      
+      hx <- c(hx, lat_dev)
+  }
+  #lines(x, hx, col = var)
+  hist(hx,	col=var)
+  var <- var +1
+}
 
-
+#2cccccccccccccccccccccccccc-----------------------------
 
 
 
