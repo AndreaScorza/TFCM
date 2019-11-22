@@ -104,3 +104,7 @@ t.test(fast,slow)
 
 vettore <- c(0,2,3,5,1,1,4,0,0)
 #print(replace(vettore, vettore!=0, 1))
+
+
+
+

@@ -31,7 +31,10 @@ dataset <- na.omit(dataset)
 latDevMean <- aggregate(dataset$lanePosition, list(dataset$partOfExperiment), mean, na.rm = TRUE)
 latDevSd <- aggregate(dataset$lanePosition, list(dataset$partOfExperiment), sd, na.rm = TRUE)
 #print(max(unique(dataset$pp)))
+print(length(latDevSd))
+print(latDevSd[2])
 StandErr_Dial <- latDevSd[2] / sqrt(max(unique(dataset$pp)))
+print(StandErr_Dial)
 #-------------------------CCCCCCCCCCCCCCCCCCCCc----------------
 
 steer_pp_mean <- aggregate(abs(dualSteerFocus$lanePosition)
@@ -66,11 +69,11 @@ gplot$labels$colour <- "Experimental Conditions"
 
 #2222222222222222222222222222222222222222222222
 
-drift <- get(load("/Users/andrea/Desktop/TFCM/Drift"))
+drift <- get(load("/Users/andrea/Desktop/TFCM/drift.Rdata"))
 
-drift_short <- table_drift[with(table_drift, trialTime >= 15000 & trialTime <= 18000), ]
+drift_short <- drift[with(drift, trialTime >= 15000 & trialTime <= 18000), ]
 colors <- sample(colors(), 20)
-plot(NULL, xlim = c(15000, 18000), ylim = c(-1, 1.5) )
+#plot(NULL, xlim = c(15000, 18000), ylim = c(-1, 1.5) )
 
 #prende le righe in base al trial e te le disegna
 
