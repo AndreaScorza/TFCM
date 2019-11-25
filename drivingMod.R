@@ -45,7 +45,7 @@ startvelocity <- 0 	#a global parameter used to store the lateral velocity of th
 
 ## times for dialing
 #singleTaskKeyPressTimes <- c(400,400,400,400,400,400,400,400,400,400,400)   #digit times needed per keypress at that specific position (note: normalized for chunk retrieval time at digits 1 and 6 --- a retrieval cost would come on top of this)
-singleTaskKeyPressTimes <- c(275, 275, 275, 275, 275, 275, 275, 275, 275, 275, 275) #new value, rounded from 274.0294
+singleTaskKeyPressTimes <- c(275, 275, 275, 275, 275, 275, 275, 275, 275, 275, 275) #new value, rounded from 274.0924
 
 digitTypeUK <- c("chunk","oth","oth","oth","oth","chunk","oth","oth","oth","oth","oth")  ### is each digit either the start of a chunk or some other digit?
 
@@ -431,6 +431,24 @@ updateSteering <- function(velocity,nrUpdates,startPosLane)
 					
 	}
 	returnValues <- c(updateVelocity,locDrifts)
-	
-	
 }
+
+#my code
+par(mfrow=c(2,3))
+sim1 <- runAllSimpleStrategies(1,"07854325698")
+sim5 <- runAllSimpleStrategies(5,"07854325698")
+sim10 <- runAllSimpleStrategies(10,"07854325698")
+sim50 <- runAllSimpleStrategies(50,"07854325698")
+#sim100 <- runAllSimpleStrategies(100,"07854325698")
+#sim200 <- runAllSimpleStrategies(200,"07854325698")
+
+#ovviamente aumentando il numero migliora la simulazione, però bisogna tenere conto del tempo,
+#secondo noi 200 può iniziare ad essere una buona approssimazione, 
+# a 50 si inizia a vedere una linea, che va man mano definendosi con l'aumentare del numero delle simulazioni
+
+
+#domande
+#1 bisogna usare il modello modificato o il modello originale per fare queste calcolazioni?
+#2 dobbiamo provare tutte le combinazioni ? per davvero ?
+
+

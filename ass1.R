@@ -180,6 +180,8 @@ while (i <= length(diffPp[ ,2])){
 genMean <- mean(totMean, na.rm = TRUE) #the mean of all the mean
 print(genMean)
 
+#444444444444444444---------------------------------------
+
 
 
 
