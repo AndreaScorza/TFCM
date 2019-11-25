@@ -102,3 +102,11 @@ fast	<- rnorm(20,200,10)
 slow	<- rnorm(20,400,10)
 t.test(fast,slow)
 
+vettore <- c(0,2,3,5,1,1,4,0,0)
+#print(replace(vettore, vettore!=0, 1))
+
+a	<- rnorm(10000,	0.0,	0.13)
+#hist(a,	col="grey")
+#summary(a)
+
+
