@@ -449,6 +449,6 @@ sim50 <- runAllSimpleStrategies(50,"07854325698")
 
 #domande
 #1 bisogna usare il modello modificato o il modello originale per fare queste calcolazioni?
-#2 dobbiamo provare tutte le combinazioni ? per davvero ?
+#2 scrivere una funzione che inserisca dei break all'interno del numero di telefono in modo casuale (ogni volta diverso)
 
 
