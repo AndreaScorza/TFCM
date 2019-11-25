@@ -163,5 +163,23 @@ hist(main = "third graph", histvect3, xlab="Car Position", col = c("green", "red
 stand_dev_histvect3 = sd(histvect3)
 
 #33333333333333333333-------------------------------------
+singDial2 <- subset(dataset, typingErrorMadeOnTrial == 0 & partOfExperiment	==	"singleDialing2")
+diffPp <- aggregate(singDial2$timeRelativeToTrialStart, list(singDial2$pp), diff, na.rm = TRUE)
+
+
+i <- 1
+totMean <- c()
+while (i <= length(diffPp[ ,2])){
+  vect <- diffPp[i, 2]
+  print(vect)
+  vect <- as.numeric(unlist(vect))
+  vect_mean = mean(vect[vect > 0], na.rm = TRUE)
+  totMean <- c(totMean,vect_mean) #vector containing all the means for people
+  i = i + 1
+}
+genMean <- mean(totMean, na.rm = TRUE) #the mean of all the mean
+print(genMean)
+
+
 
 

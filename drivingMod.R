@@ -44,8 +44,8 @@ startvelocity <- 0 	#a global parameter used to store the lateral velocity of th
 ### all times in milliseconds
 
 ## times for dialing
-singleTaskKeyPressTimes <- c(400,400,400,400,400,400,400,400,400,400,400)   #digit times needed per keypress at that specific position (note: normalized for chunk retrieval time at digits 1 and 6 --- a retrieval cost would come on top of this)
-
+#singleTaskKeyPressTimes <- c(400,400,400,400,400,400,400,400,400,400,400)   #digit times needed per keypress at that specific position (note: normalized for chunk retrieval time at digits 1 and 6 --- a retrieval cost would come on top of this)
+singleTaskKeyPressTimes <- c(275, 275, 275, 275, 275, 275, 275, 275, 275, 275, 275) #new value, rounded from 274.0294
 
 digitTypeUK <- c("chunk","oth","oth","oth","oth","chunk","oth","oth","oth","oth","oth")  ### is each digit either the start of a chunk or some other digit?
 
