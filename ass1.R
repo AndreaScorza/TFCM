@@ -132,23 +132,36 @@ print(stand_dev_simulated)
 
 #2eeeeeeeeeeeeeeeeeeeeee--------------------------------
 
+#par(mfrow = c(1,2))
 
-plot(NULL, xlim = c(0, 3000), ylim = c(-3, 3), xlab="Trial time (ms)",
+plot(NULL, xlim = c(0, 3000), ylim = c(-2, 2), xlab="Trial time (ms)",
      ylab="Lateral Position (m)", main="Simulated Data (based on original model)")
 
+# scelto 0.06 perchè lo span (over the car position axis) è nel human trial circa da -1 a 1 come con 0.06, 
+# e con gli estremi circa intorno a -0.5 e +0.5 abbastanza bassini come in 0.06
+histvect3 <- c()
 var <- 0
-while(var < 20){
+while(var < 50){
   x <- seq(0, 3000, length=60)
   hx <- c()
   lat_dev <- 0
   for (value in x){
-    lat_dev = rnorm(1,lat_dev,0.13)
+    lat_dev = rnorm(1,lat_dev,0.05)
     
     hx <- c(hx, lat_dev)
+    histvect3 <- c(histvect3, hx)
   }
+  
+  #plot of how lane	position	changes	over	time	for	the	individual	simulated	trials
   lines(x, hx, col = var)
-  #hist(hx,	col=var)
   var <- var +1
 }
+
+#plot of the resulting distribution
+hist(main = "third graph", histvect3, xlab="Car Position", col = c("green", "red"), xlim = c(-2, 2), breaks = seq(-2, 2, by = 0.1))
+
+stand_dev_histvect3 = sd(histvect3)
+
+#33333333333333333333-------------------------------------
 
 
