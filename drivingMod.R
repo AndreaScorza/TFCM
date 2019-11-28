@@ -96,8 +96,10 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 	for (chunkPosition in normalPhoneStructure)
 	{
 		dialTimes[chunkPosition] <- dialTimes[chunkPosition] + chunkRetrievalTime
-	}	
+		print(chunkPosition)
 		
+	}	
+	print(dialTimes)
 		
 	### now go through the various numbers
 	for (digitindex in 1:length(dialTimes))
@@ -180,7 +182,7 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 {
 	
 	
-	normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
+	normalPhoneStructure <- c(1,6,9)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
 	phoneStringLength <- 11   ### how many digits does the number have?
 	
 
@@ -200,9 +202,12 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 		if (nrDigitsPerTime != 11)
 		{
 			strategy <- rep(nrDigitsPerTime ,floor(phoneStringLength/nrDigitsPerTime))  ### stores at which positions the number is interleaved
+			print("prima")
+			print(strategy)
 			positions <- 1:length(strategy)
 			strategy <- strategy * positions
-		
+			print("dopo")
+			print(strategy)
 			### remove last digit, as driver does not interleave after typing the last digit (they are done with the trial :-)  )
 			strategy <- strategy[strategy != phoneStringLength]
 		}
@@ -229,7 +234,7 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 
 				### run the simulation and store the output in a table
 				locTab <- runOneTrial(strategy, steerTimes,normalPhoneStructure,phoneStringLength,phoneNumber)
-	
+	      print(locTab)
 				##only look at rows where there is a keypress
 				locTab <- locTab[locTab$events == "keypress",]
 		
@@ -434,11 +439,11 @@ updateSteering <- function(velocity,nrUpdates,startPosLane)
 }
 
 #my code
-par(mfrow=c(2,3))
-sim1 <- runAllSimpleStrategies(1,"07854325698")
-sim5 <- runAllSimpleStrategies(5,"07854325698")
-sim10 <- runAllSimpleStrategies(10,"07854325698")
-sim50 <- runAllSimpleStrategies(50,"07854325698")
+#par(mfrow=c(2,3))
+#sim1 <- runAllSimpleStrategies(1,"07854325698")
+#sim5 <- runAllSimpleStrategies(5,"07854325698")
+#sim10 <- runAllSimpleStrategies(10,"07854325698")
+#sim50 <- runAllSimpleStrategies(50,"07854325698")
 #sim100 <- runAllSimpleStrategies(100,"07854325698")
 #sim200 <- runAllSimpleStrategies(200,"07854325698")
 
@@ -448,7 +453,10 @@ sim50 <- runAllSimpleStrategies(50,"07854325698")
 
 
 #domande
+#0 come si calcola il noise ? 
 #1 bisogna usare il modello modificato o il modello originale per fare queste calcolazioni?
 #2 scrivere una funzione che inserisca dei break all'interno del numero di telefono in modo casuale (ogni volta diverso)
 
+
+runAllSimpleStrategies(1, 12312345645)
 

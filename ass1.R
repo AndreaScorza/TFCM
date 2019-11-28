@@ -181,7 +181,14 @@ genMean <- mean(totMean, na.rm = TRUE) #the mean of all the mean
 print(genMean)
 
 #444444444444444444---------------------------------------
+# floor(x) = arrotonda x (toglie al virgola)
 
+x <- c(1,34,1,3,454,52)
+print(rep(1:3,3))
+print(floor(1))
 
+x <- c(1:11)
+y <- c(1,1,1,1,1,1,1,1,1,1,1)
+print(x * y)
 
 
