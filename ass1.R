@@ -181,19 +181,5 @@ genMean <- mean(totMean, na.rm = TRUE) #the mean of all the mean
 print(genMean)
 
 #444444444444444444---------------------------------------
-comb <- c()
-i <- 1
-vettore <- c(1,2,3,4,5)
-for (i in vettore) {
-  x <- (combn(vettore,i))
-  for (y in 1:ncol(x)){
-    print(x[,y])
-    strategy <- x[,y]
-  }
-}
 
-char <- "3356340209"
-while (i in char){
-  print("ghello")
-}
 
