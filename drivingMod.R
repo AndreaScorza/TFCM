@@ -126,7 +126,8 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 			drifts <- c(drifts,steerOutput[2:length(steerOutput)])
 			events <- c(events,rep("steer",(length(steerOutput)-1)))
 			times <- updateTimestampslist(times,(nrSteeringUpdates* steeringUpdateTime))
-			
+			#print("dentro al secondo if")
+			#print(strategy)
 
 				
 			### now switch back to dialing the number (using the drift parameters for distracted driving). First, you incur some time due to switching from driving to dialing
@@ -317,9 +318,12 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 			positions <- 1:length(strategy)
 			strategy <- strategy * positions
 			#print("dopo")
-			#print(strategy)
+			print(typeof(strategy))
 			### remove last digit, as driver does not interleave after typing the last digit (they are done with the trial :-)  )
 			strategy <- strategy[strategy != phoneStringLength]
+			#print(nrDigitsPerTime)
+			#strategy <- 6
+			
 
 		}
 		else
@@ -570,4 +574,12 @@ updateSteering <- function(velocity,nrUpdates,startPosLane)
 
 
 runAllSimpleStrategies(1, 12312345645)
+#runAllComplexStrategie(1, 12312345645)
+# 1 che significa numero di dimulazioni, indica ill numero di simulazioni che vuoi fare per strategy, 
+# quindi quante simulazioni vuoi all'interno di ogni pallino, un pallino del grafo corrisponde ad una strategy, 
+# ed è la media del numero di simulazini che hai dato per chiamare la funzione runAllStrategy
+
+
+
+
 
