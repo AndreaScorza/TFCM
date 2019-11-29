@@ -181,14 +181,19 @@ genMean <- mean(totMean, na.rm = TRUE) #the mean of all the mean
 print(genMean)
 
 #444444444444444444---------------------------------------
-# floor(x) = arrotonda x (toglie al virgola)
+comb <- c()
+i <- 1
+vettore <- c(1,2,3,4,5)
+for (i in vettore) {
+  x <- (combn(vettore,i))
+  for (y in 1:ncol(x)){
+    print(x[,y])
+    strategy <- x[,y]
+  }
+}
 
-x <- c(1,34,1,3,454,52)
-print(rep(1:3,3))
-print(floor(1))
-
-x <- c(1:11)
-y <- c(1,1,1,1,1,1,1,1,1,1,1)
-print(x * y)
-
+char <- "3356340209"
+while (i in char){
+  print("ghello")
+}
 

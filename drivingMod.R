@@ -96,15 +96,15 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 	for (chunkPosition in normalPhoneStructure)
 	{
 		dialTimes[chunkPosition] <- dialTimes[chunkPosition] + chunkRetrievalTime
-		print(chunkPosition)
+		#print(chunkPosition)
 		
 	}	
-	print(dialTimes)
+	#print(dialTimes)
 		
 	### now go through the various numbers
-	for (digitindex in 1:length(dialTimes))
+	for (digitindex in 1:length(dialTimes)) #per quanto è lungo il numero di telefono
 	{
-
+    #print("dentro il secondo loop")
 		### determine dial time, so additional costs can be added later
 		locDialTime <- dialTimes[digitindex]
 			
@@ -136,7 +136,7 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 			newVelocity <- driftOutput[1]
 			drifts <- c(drifts,driftOutput[2:length(driftOutput)])
 			events <- c(events,rep("switch2",(length(driftOutput)-1)))
-			
+			#print(digitindex)
 			
 			
 			
@@ -178,11 +178,121 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 
 #### Main function to run the code. For example: runAllSimpleStrategies(5,"07854325698") will run 5 simulations for each (simple) strategy on the phone number to the right. The default assumption is that the chunk boundary is between the 5th and 6th digit
 
+runAllComplexStrategie <- function(nrSimulation, phoneNumber) {
+  
+  #print(nrSimulation)
+  normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
+  phoneStringLength <- 11   ### how many digits does the number have?
+  
+  
+  ### vectors that will contain output of the simulation. These are later used to create 1 table with all values
+  keypresses <- c()
+  times <- c()
+  deviations <- c()
+  strats <- c()
+  steers <- c()	
+  
+  phoneNumberVect <- c()
+  for (el in 1:nchar(phoneNumber)){
+    num <-as.numeric(substr(phoneNumber,el,el))
+    phoneNumberVect <- c(phoneNumberVect, num)
+  }
+
+
+
+  ### iterate through all strategies
+  ## in this simple model we assume that a participant uses a consistent strategy throughout the trial. That is, they only type each time 1 digit, or type 2 digits at a time, or type 3 digits at a time (i.e., all possible ways of 1:phoneStringLength: 1, 2,3,4, ...11)
+  for (nrDigitsPerTime in 1: phoneStringLength)
+  {
+    ## quick way of calculating positions to interleave: repeat strategy & multiply with position in vector (e.g., 333*123 = 369 this means: you interleave BEFORE every 3rd digit (333), and there are 3 positions to interleave (1st, 2nd, 3rd, or 123). Therefore you interleave BEFORE digits 3 (3*1), 6 (3*2), and 9 (3*3))
+    
+    x <- combn(phoneNumberVect, nrDigitsPerTime)
+    for (y in 1:ncol(x)){
+    
+  
+      if (nrDigitsPerTime != 11)
+      {
+        strategy <- x[,y]
+      }
+      else
+      {
+        strategy <- c()	
+        
+      }
+      
+      
+      locSteerTimeOptions <- steeringTimeOptions
+      if (length(strategy) == 0)
+      {
+        locSteerTimeOptions <- c(0)
+      }
+    
+    
+    
+      ### now run a trial (runOneTrial) for all combinations of how frequently you update the steering when you are steering (locSteerTimeOptions) and for the nuber of simulations that you want to run for each strategy (nrSimulations)
+      for (steerTimes in locSteerTimeOptions)
+      {
+        for (i in 1:nrSimulation)
+        {
+          
+          ### run the simulation and store the output in a table
+          locTab <- runOneTrial(strategy, steerTimes,normalPhoneStructure,phoneStringLength,phoneNumber)
+
+          ##only look at rows where there is a keypress
+          locTab <- locTab[locTab$events == "keypress",]
+          
+          ### add the relevant data points to variables that are stored in a final table
+          keypresses <- c(keypresses,1:nrow(locTab))
+          times <- c(times,locTab$times)
+          deviations <- c(deviations,locTab$drifts)
+          strats <- c(strats,rep(nrDigitsPerTime,nrow(locTab)))
+          steers <- c(steers,rep(steerTimes,nrow(locTab)))
+          
+        }
+      }#end of for steerTimes	
+    } #end mio for
+  }##end of for nr strategies
+  
+  
+  ### now make a new table based on all the data that was collected
+  tableAllSamples <- data.frame(keypresses,times,deviations,strats,steers)
+  
+  
+  #### In the table we collected data for multiple simulations per strategy. Now we want to know the average performane of each strategy.
+  #### These aspects are calculated using the "aggregate" function
+  
+  
+  ## calculate average deviation at each keypress (keypresses), for each unique strategy variation (strats and steers)
+  agrResults <- with(tableAllSamples,aggregate(deviations,list(keypresses=keypresses, strats= strats, steers= steers),mean))
+  agrResults$dev <- agrResults$x
+  
+  
+  ### also calculate the time interval
+  agrResults$times <- with(tableAllSamples,aggregate(times,list(keypresses=keypresses, strats= strats, steers= steers),mean))$x
+  
+  
+  ###now calculate mean drift across the trial
+  agrResultsMeanDrift <-  with(agrResults,aggregate(dev,list(strats= strats, steers= steers),mean))
+  agrResultsMeanDrift$dev <- agrResultsMeanDrift$x
+  
+  ### and mean trial time
+  agrResultsMeanDrift$TrialTime <-  with(agrResults[agrResults$keypresses ==11,],aggregate(times,list( strats= strats, steers= steers),mean))$x	
+  
+  
+  #### make a plot that visualizes all the strategies: note that trial time is divided by 1000 to get the time in seconds
+  with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log="x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)"))
+  
+  
+  ### give a summary of the data	
+  summary(agrResultsMeanDrift$TrialTime) 
+  
+  
+}
 runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 {
 	
 	
-	normalPhoneStructure <- c(1,6,9)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
+	normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
 	phoneStringLength <- 11   ### how many digits does the number have?
 	
 
@@ -202,14 +312,15 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 		if (nrDigitsPerTime != 11)
 		{
 			strategy <- rep(nrDigitsPerTime ,floor(phoneStringLength/nrDigitsPerTime))  ### stores at which positions the number is interleaved
-			print("prima")
-			print(strategy)
+			#print("prima")
+			#print(strategy)
 			positions <- 1:length(strategy)
 			strategy <- strategy * positions
-			print("dopo")
-			print(strategy)
+			#print("dopo")
+			#print(strategy)
 			### remove last digit, as driver does not interleave after typing the last digit (they are done with the trial :-)  )
 			strategy <- strategy[strategy != phoneStringLength]
+
 		}
 		else
 		{
@@ -234,7 +345,7 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 
 				### run the simulation and store the output in a table
 				locTab <- runOneTrial(strategy, steerTimes,normalPhoneStructure,phoneStringLength,phoneNumber)
-	      print(locTab)
+
 				##only look at rows where there is a keypress
 				locTab <- locTab[locTab$events == "keypress",]
 		
