@@ -146,7 +146,7 @@ while(var < 50){
   hx <- c()
   lat_dev <- 0
   for (value in x){
-    lat_dev = rnorm(1,lat_dev,0.05)
+    lat_dev = rnorm(1,lat_dev,0.06)
     
     hx <- c(hx, lat_dev)
     histvect3 <- c(histvect3, hx)

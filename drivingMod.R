@@ -30,7 +30,8 @@ gaussDeviateSD <- 0.06 #value calculated in 2E
 
 #When the car is actively contorlled, we calculate a value using equation (1) in Janssen & Brumby (2010). However, some noise is added on top of this equation to account for variation in human behavior. See Janssen & Brumby (2010) page 1555. Also see function "updateSteering" on how this function is used
 gaussDriveNoiseMean <- 0
-gaussDriveNoiseSD <- 0.1	#in meter/sec
+#gaussDriveNoiseSD <- 0.1	#in meter/sec
+gaussDriveNoiseSD <- 0.046	#modified version using the proprtion 0.13:0.10 = 0.06:X
 
 timeStepPerDriftUpdate <- 50 ### msec: what is the time interval between two updates of lateral position?
 
@@ -318,7 +319,7 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 			positions <- 1:length(strategy)
 			strategy <- strategy * positions
 			#print("dopo")
-			print(typeof(strategy))
+			#print(typeof(strategy))
 			### remove last digit, as driver does not interleave after typing the last digit (they are done with the trial :-)  )
 			strategy <- strategy[strategy != phoneStringLength]
 			#print(nrDigitsPerTime)
@@ -573,7 +574,7 @@ updateSteering <- function(velocity,nrUpdates,startPosLane)
 #2 scrivere una funzione che inserisca dei break all'interno del numero di telefono in modo casuale (ogni volta diverso)
 
 
-runAllSimpleStrategies(1, 12312345645)
+runAllSimpleStrategies(10, 12312345645)
 #runAllComplexStrategie(1, 12312345645)
 # 1 che significa numero di dimulazioni, indica ill numero di simulazioni che vuoi fare per strategy, 
 # quindi quante simulazioni vuoi all'interno di ogni pallino, un pallino del grafo corrisponde ad una strategy, 
