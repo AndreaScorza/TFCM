@@ -171,7 +171,7 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 	#with(table[table$events == "keypress",],plot(times,drifts,ylim=c(-2,2)))
 
 	table ### return the table
-
+  #print(table)
 }
 
 
@@ -293,7 +293,6 @@ runAllComplexStrategie <- function(nrSimulation, phoneNumber) {
 runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 {
 	
-	
 	normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
 	phoneStringLength <- 11   ### how many digits does the number have?
 	
@@ -320,11 +319,11 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 			strategy <- strategy * positions
 			#print("dopo")
 			#print(typeof(strategy))
+			
 			### remove last digit, as driver does not interleave after typing the last digit (they are done with the trial :-)  )
 			strategy <- strategy[strategy != phoneStringLength]
 			#print(nrDigitsPerTime)
 			#strategy <- 6
-			
 
 		}
 		else
@@ -341,16 +340,16 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 		}
 
 
-
+    
 		### now run a trial (runOneTrial) for all combinations of how frequently you update the steering when you are steering (locSteerTimeOptions) and for the nuber of simulations that you want to run for each strategy (nrSimulations)
 		for (steerTimes in locSteerTimeOptions)
 		{
 			for (i in 1:nrSimulations)
 			{
-
+        
 				### run the simulation and store the output in a table
 				locTab <- runOneTrial(strategy, steerTimes,normalPhoneStructure,phoneStringLength,phoneNumber)
-
+        
 				##only look at rows where there is a keypress
 				locTab <- locTab[locTab$events == "keypress",]
 		
@@ -369,7 +368,7 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 	
 	### now make a new table based on all the data that was collected
 	tableAllSamples <- data.frame(keypresses,times,deviations,strats,steers)
-	
+	#print(tableAllSamples)
 	
 	#### In the table we collected data for multiple simulations per strategy. Now we want to know the average performane of each strategy.
 	#### These aspects are calculated using the "aggregate" function
@@ -391,10 +390,27 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 	### and mean trial time
 	agrResultsMeanDrift$TrialTime <-  with(agrResults[agrResults$keypresses ==11,],aggregate(times,list( strats= strats, steers= steers),mean))$x	
 	
-	
+	print(agrResultsMeanDrift)
 	#### make a plot that visualizes all the strategies: note that trial time is divided by 1000 to get the time in seconds
-	with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log="x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)"))
 	
+	human_mean_SE <- 139.61/1000
+	
+	plot(NULL, xlim = c(0, 40), ylim = c(0, 0.8), xlab="Dial time (s)",ylab="Average Lateral Deviation (m)")
+	for (value in 1:nrow(agrResultsMeanDrift)){
+	  
+	  if (agrResultsMeanDrift[value,1] == 6){
+	    points(agrResultsMeanDrift[value, 5]/1000, abs(agrResultsMeanDrift[value, 4]), pch=21, col="red", bg = "red")
+	    #points(agrResultsMeanDrift[value, 5]/1000 + human_mean_SE, abs(agrResultsMeanDrift[value, 4]), pch=21, col="green")
+	    
+	 }
+	  else{
+	    points(agrResultsMeanDrift[value, 5]/1000,abs(agrResultsMeanDrift[value, 4]), pch=21, col="dark grey")
+	    #points(agrResultsMeanDrift[value, 5]/1000 + human_mean_SE,abs(agrResultsMeanDrift[value, 4]), pch=21, col="blue")
+	    
+	  }
+	}
+	#with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log="x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)"))
+
 	
 	### give a summary of the data	
 	summary(agrResultsMeanDrift$TrialTime)
@@ -468,9 +484,11 @@ calculateLaneDrift <- function(startPositionOfDrift, startVelocityOfDrift, drift
 	### make sure velocity is not higher than max
 	locVelocity <- velocityCheck(locVelocity)
 	
+	
 	if (driftTimeInMilliSeconds%% timeStepPerDriftUpdate > 0)
 	{
 	
+		lastLaneDrift <- lastLaneDrift + locVelocity*(driftTimeInMilliSeconds%% timeStepPerDriftUpdate)/1000
 		lastLaneDrift <- lastLaneDrift + locVelocity*(driftTimeInMilliSeconds%% timeStepPerDriftUpdate)/1000
 		
 		

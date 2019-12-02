@@ -113,6 +113,7 @@ while(var < 20){
     histvect2 <- c(histvect2, hx)
   }
   lines(x, hx, col = var)
+  print("one here")
   #hist(hx,	col=var)
   var <- var +1
 }
