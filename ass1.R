@@ -23,18 +23,21 @@ meanTime <- function(data){
 meanDualSteer <- meanTime(dualSteerFocus)
 meanDualDial <- meanTime(dualDialFocus)
 
-#print(meanDualDial)
-#print(meanDualSteer)
-
+print(meanDualDial)
+print(meanDualSteer)
+stand.error.dial <- meanDualDial[3]
+stand.error.steer <- meanDualSteer[3]
+stand.error.steer
 #--------------------------BBBBBBBBBBBBBBBBBBBB----------------------------------------------
 dataset <- na.omit(dataset)
 latDevMean <- aggregate(dataset$lanePosition, list(dataset$partOfExperiment), mean, na.rm = TRUE)
 latDevSd <- aggregate(dataset$lanePosition, list(dataset$partOfExperiment), sd, na.rm = TRUE)
 #print(max(unique(dataset$pp)))
 print(length(latDevSd))
-print(latDevSd[2])
+print(latDevSd)
 StandErr_Dial <- latDevSd[2] / sqrt(max(unique(dataset$pp)))
 print(StandErr_Dial)
+ySE.dial.steer <- StandErr_Dial
 #-------------------------CCCCCCCCCCCCCCCCCCCCc----------------
 
 steer_pp_mean <- aggregate(abs(dualSteerFocus$lanePosition)
