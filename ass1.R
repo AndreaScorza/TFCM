@@ -38,8 +38,8 @@ print(StandErr_Dial)
 #-------------------------CCCCCCCCCCCCCCCCCCCCc----------------
 
 steer_pp_mean <- aggregate(abs(dualSteerFocus$lanePosition)
-                                , list(participant = dualSteerFocus$pp, keypress = dualSteerFocus$phoneNrLengthAfterKeyPress)
-                                , mean)
+                           , list(participant = dualSteerFocus$pp, keypress = dualSteerFocus$phoneNrLengthAfterKeyPress)
+                           , mean)
 dial_pp_mean <- aggregate(abs(dualDialFocus$lanePosition)
                           , list(participant = dualDialFocus$pp, keypress = dualDialFocus$phoneNrLengthAfterKeyPress)
                           , mean)
@@ -49,18 +49,18 @@ avg_pp_dial <- aggregate(abs(dial_pp_mean$x), list(keypress = dial_pp_mean$keypr
 
 
 result <- data.frame(avg_pp_dial$keypress, avg_pp_dial$x
-                          , avg_pp_steer$keypress, avg_pp_steer$x)
+                     , avg_pp_steer$keypress, avg_pp_steer$x)
 
 #can use geom_point instead of geom_line
 gplot <- gplot + geom_line(aes(x = result$avg_pp_dial.keypress
-                                , y = result$avg_pp_dial.x
-                                , colour = "Dialing Focus"), shape = 15)
+                               , y = result$avg_pp_dial.x
+                               , colour = "Dialing Focus"), shape = 15)
 gplot <- gplot + geom_line(aes(x = result$avg_pp_steer.keypress
-                                , y = result$avg_pp_steer.x
-                                , colour = "Steering Focus"), shape = 15)
+                               , y = result$avg_pp_steer.x
+                               , colour = "Steering Focus"), shape = 15)
 
 gplot <- gplot + scale_colour_manual(limits=c("Dialing Focus", "Steering Focus"), 
-                                      values=c("red", "blue"))
+                                     values=c("red", "blue"))
 
 gplot <- gplot + labs(title="Dual Dial vs Dual Steer Focus Condition", x ="Key Presses", y = "Lane Deviation")
 
@@ -105,12 +105,12 @@ while(var < 20){
   hx <- c()
   lat_dev <- 0
   for (value in x){
-      lat_dev = rnorm(1,lat_dev,0.13)
-      
-      hx <- c(hx, lat_dev)
-      #print(value)
-      #print(hx)
-      histvect2 <- c(histvect2, hx)
+    lat_dev = rnorm(1,lat_dev,0.13)
+    
+    hx <- c(hx, lat_dev)
+    #print(value)
+    #print(hx)
+    histvect2 <- c(histvect2, hx)
   }
   lines(x, hx, col = var)
   #hist(hx,	col=var)
